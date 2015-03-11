@@ -1,0 +1,37 @@
+extends layout
+
+block content
+  div.container.full
+            
+   main.board
+      div.col-lg-12.col-md-12.col-xs-12
+         div.row
+           div.col-lg-5.col-lg-offset-1.col-md-5.col-md-offset-1.col-xs-12.text-center
+             div.class-spacer-100
+             h1(style="font-size:100px; color:white;")= title
+           div.col-lg-5.col-md-5.col-xs-5.text-center
+             div.class-spacer-50-no-margin
+             i.hidden-xs.fa.fa-phone.fa-6(style="font-size:300px; color:white;")
+         
+
+         div.row.col-lg-12.col-md-12.col-xs-12
+            div.class-spacer-120
+               div.col-lg-4.col-md-4.col-xs-12.col-md-offset-1
+                  div.form-group
+                     div.input-group
+                        span.input-group-addon= "Username"
+                        input.form-control#username
+                           
+               div.col-lg-4.col-md-4.col-xs-12
+                  div.form-group
+                     div.input-group
+                        span.input-group-addon= "Room Name"
+                        input.form-control#roomname
+                           
+               div.col-lg-3.col-md-3.col-xs-12
+                  div.form-group
+                     div.input-group
+                        button.btn.btn-default#submit= "Submit"
+         
+script.
+     document.getElementById('submit').addEventListener('click',function(e){console.log('click')});

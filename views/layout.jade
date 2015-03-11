@@ -1,0 +1,58 @@
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    meta(name='description', content='')
+    meta(name='author', content='')
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css')
+    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css')
+    script(type="text/javascript", src="https://cdn.socket.io/socket.io-1.3.4.js")
+    title= title
+  body
+     
+        block content
+        
+    script.
+         var roomsUsed = [];
+         var usersUsed = [];
+         var socket = io.connect(window.location.hostname+':3000');
+         socket.on('user-connected-index', function(data){ 
+         console.log(data);
+            //- socket.emit('my other event', {my:'data'});
+         roomsUsed = data.currentRooms;
+         usersUsed = data.currentUsers;
+         })
+         socket.on('enter-room',function(data){
+         console.log(data);
+         })
+         function checkRoom(name){
+         if(roomsUsed.indexOf(name)!=-1){
+         return 'join';
+         }
+         else{
+         return 'create';
+         }
+         }
+          document.getElementById('submit').addEventListener('click',function(e){
+          var username = document.getElementById('username').value;
+          var roomname = document.getElementById('roomname').value
+          if(username == ""){
+          document.getElementById('username').style.borderColor = 'red';
+          }else{
+          var flag = true;
+          document.getElementById('username').style.borderColor = 'green';
+          }
+          if(roomname != "" && flag){
+          document.getElementById('roomname').style.borderColor = 'green';
+          var roomStatus = checkRoom(roomname);
+          socket.emit('send',{'action' : roomStatus, 'roomName': roomname, 'userName' : username})
+          window.location.pathname +="room/" + roomname
+          }
+          else{
+           document.getElementById('roomname').style.borderColor = 'red';
+          }
+          })
+          
