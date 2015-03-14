@@ -11,9 +11,6 @@ var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
-
-var roomsUsed = ['testRoom'];
-var usersUsed = ['testUser'];
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -65,6 +62,17 @@ http.listen(3000);
 io.sockets.on('connection', function (socket) {
     var guestName = _Util.generateGuest();
     _Util.registerUser(socket, guestName);
-    _Util.assignRoom(socket, 'Lobby');
+
+    socket.on('disconnect', function() {
+      _Util.removeUser(this);
+   });
+
+   socket.on('roomChange', function(data){
+      console.log('roomChange serverside');
+      var roomName = data.roomName;
+      var socket = this;
+      _Util.changeRoom(socket, roomName);
+   });
+
 });
 // module.exports = app;
