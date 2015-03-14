@@ -71,7 +71,12 @@ io.sockets.on('connection', function (socket) {
       console.log('roomChange serverside');
       var roomName = data.roomName;
       var socket = this;
-      _Util.changeRoom(socket, roomName);
+      if(_Util.changeRoom(socket, roomName)){
+        //Change rooms by emmiting client side event
+        //this.emit();
+      }else{
+        /// No room change stay in curent room
+      }
    });
 
 });
