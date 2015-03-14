@@ -4,12 +4,11 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
 var _Util = require('./lib/util.js');
 var routes = require('./routes/index');
 var room = require('./routes/room');
 var app = express();
-var http = require('http').Server(app)
+var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
 
@@ -64,6 +63,8 @@ app.use(function(err, req, res, next) {
 http.listen(3000);
 
 io.sockets.on('connection', function (socket) {
+    var guestName = _Util.generateGuest();
+    _Util.registerUser(socket, guestName);
     _Util.assignRoom(socket, 'Lobby');
 });
 // module.exports = app;
