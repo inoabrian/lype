@@ -69,13 +69,15 @@ io.sockets.on('connection', function (socket) {
 
    socket.on('roomChange', function(data){
       var roomName = data.roomName;
+      var userName = data.userName;
       var socket = this;
       if(_Util.changeRoom(socket, roomName)){
         //Change rooms by emmiting client side event
-        //this.emit();
+        this.emit('room-change-success', {'roomName' : roomName, 'userName' : userName});
       }else{
         /// No room change stay in curent room
       }
+
    });
 
 });
