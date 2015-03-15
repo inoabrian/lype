@@ -64,7 +64,8 @@ a {
    margin-top:50px;
 }
 
-.class-spacer-50-no-margin{
+.class-spacer-50-no-margin
+{
    width: 100%;
    height:50px;
    max-height:50px;
@@ -104,6 +105,6 @@ a {
    max-height:1200px;
    min-height:500px;
    display:block;
-   background:url('http://ironsummitmedia.github.io/startbootstrap-grayscale/img/intro-bg.jpg');
+   background:url('https://ironsummitmedia.github.io/startbootstrap-grayscale/img/intro-bg.jpg');
    background-size:cover;
 }

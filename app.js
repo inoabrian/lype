@@ -72,10 +72,12 @@ app.get('/:roomname', function(req, res) {
 io.sockets.on('connection', function (socket) {
     var guestName = _Util.generateGuest();
     _Util.registerUser(socket, guestName);
+    console.log('Users Connected : ' + _Util.namesUsed.length);
     io.sockets.emit('update-number', {'numberOfUsers' : _Util.namesUsed.length});
 
     socket.on('disconnect', function() {
       _Util.removeUser(this);
+      console.log('There was a disconnect Users Connected : ' + _Util.namesUsed.length);
       io.sockets.emit('update-number', {'numberOfUsers' : _Util.namesUsed.length});
    });
 
