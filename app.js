@@ -57,7 +57,7 @@ app.use(function(err, req, res, next) {
     });
 });
 
-http.listen(3000);
+http.listen(process.env.PORT || '8000');
 
 io.sockets.on('connection', function (socket) {
     var guestName = _Util.generateGuest();
@@ -81,4 +81,3 @@ io.sockets.on('connection', function (socket) {
    });
 
 });
-// module.exports = app;
