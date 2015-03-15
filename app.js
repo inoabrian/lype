@@ -68,7 +68,6 @@ io.sockets.on('connection', function (socket) {
    });
 
    socket.on('roomChange', function(data){
-      console.log('roomChange serverside');
       var roomName = data.roomName;
       var socket = this;
       _Util.changeRoom(socket, roomName);
