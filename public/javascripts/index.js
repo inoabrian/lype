@@ -8,7 +8,7 @@ $(document).ready(function(){
    function changeView(view){
          var oReq = new XMLHttpRequest();
          oReq.onload = requestListener;
-         oReq.open('GET', 'localhost:3000/' + view , true);
+         oReq.open('GET', 'http://whispering-coast-1807.herokuapp.com/' + view , true);
          oReq.send();
    };
 
