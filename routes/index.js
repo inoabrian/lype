@@ -10,7 +10,7 @@ router.get('/', function(req, res) {
   });
 });
 
-router.post('/',function(req,res,io){
+router.post('/',function(req,res){
    res('Post to create rooms...');
 });
 
