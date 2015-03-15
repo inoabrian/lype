@@ -1,6 +1,5 @@
 var express = require('express');
 var router = express.Router();
-var cors = require('cors');
 
 /* GET users listing. */
 
@@ -18,7 +17,7 @@ var cors = require('cors');
 //    });
 // });
 //
-router.get('/:roomname', cors(), function(req, res) {
+router.get('/:roomname', function(req, res) {
    res.header("Access-Control-Allow-Origin", "*");
    res.header("Access-Control-Allow-Headers", "X-Requested-With");
    res.render('room', {
