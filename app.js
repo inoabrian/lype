@@ -77,9 +77,12 @@ io.sockets.on('connection', function (socket) {
     io.sockets.emit('update-number', {'numberOfUsers' : _Util.namesUsed.length});
 
     socket.on('disconnect', function() {
-      _Util.removeUser(this);
-      console.log('There was a disconnect Users Connected : ' + _Util.namesUsed.length);
-      io.sockets.emit('update-number', {'numberOfUsers' : _Util.namesUsed.length});
+      console.log(this);
+      setTimeout(function() {
+         _Util.removeUser(this);
+         console.log('There was a disconnect Users Connected : ' + _Util.namesUsed.length);
+         io.sockets.emit('update-number', {'numberOfUsers' : _Util.namesUsed.length});
+      }.bind(this),3000);
    });
 
    socket.on('enterChat', function(data) {
@@ -95,6 +98,12 @@ io.sockets.on('connection', function (socket) {
         console.log('room-change-error');
         this.emit('room-change-error', {'userName' : userName});
       }
+   });
+
+   socket.on('updateChatNumber', function(data){
+         _Util.chatPopulation += 1;
+         var name = data.chatPopulation;
+         io.sockets.emit('updateChatPopulation',{'populationNumber' : name});
    });
 
 });
