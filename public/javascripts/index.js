@@ -19,9 +19,14 @@ $(document).ready(function(){
    });
 
    socket.on('room-change-success', function(data) {
-      var hash = data.roomName;
       var userName = data.userName;
-      changeView(hash);
+      // We should redraw the page to show chat and video
+   });
+
+   socket.on('room-change-error', function(data) {
+      var userName = data.userName;
+      window.alert('Username : ' + userName + ', is already taken');
+      return false;
    });
 
    $('#submit').click(function(e){

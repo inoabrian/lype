@@ -70,6 +70,7 @@ app.get('/:roomname', function(req, res) {
 });
 
 io.sockets.on('connection', function (socket) {
+
     var guestName = _Util.generateGuest();
     _Util.registerUser(socket, guestName);
     console.log('Users Connected : ' + _Util.namesUsed.length);
@@ -84,11 +85,15 @@ io.sockets.on('connection', function (socket) {
    socket.on('enterChat', function(data) {
       var userName = data.userName;
       var socket = this;
-      if(_Util.changeName(socket, userName)){
+      var nameChanged = _Util.changeName(socket, userName);
+      if(nameChanged){
         //Change rooms by emmiting client side event
+        console.log('room-change-success');
         this.emit('room-change-success', {'userName' : userName});
       }else{
         /// No room change stay in curent room
+        console.log('room-change-error');
+        this.emit('room-change-error', {'userName' : userName});
       }
    });
 
