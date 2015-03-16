@@ -81,17 +81,15 @@ io.sockets.on('connection', function (socket) {
       io.sockets.emit('update-number', {'numberOfUsers' : _Util.namesUsed.length});
    });
 
-   socket.on('roomChange', function(data){
-      var roomName = data.roomName;
+   socket.on('enterChat', function(data) {
       var userName = data.userName;
       var socket = this;
-      if(_Util.changeRoom(socket, roomName)){
+      if(_Util.changeName(socket, userName)){
         //Change rooms by emmiting client side event
-        this.emit('room-change-success', {'roomName' : roomName, 'userName' : userName});
+        this.emit('room-change-success', {'userName' : userName});
       }else{
         /// No room change stay in curent room
       }
-
    });
 
 });

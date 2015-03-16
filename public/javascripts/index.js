@@ -26,10 +26,16 @@ $(document).ready(function(){
 
    $('#submit').click(function(e){
          var userName = $('#username').val();
-         var roomName = $('#roomname').val();
-         console.log(userName);
-         console.log(roomName);
-         socket.emit('roomChange', {'roomName' : roomName,'userName' : userName});
+         if(userName != ''){
+            $('#username').css('border-color',  '#27ae60').animate({
+                 borderWidth: 1
+            }, 500);
+            socket.emit('enterChat', {'userName' : userName});
+         }else{
+            $('#username').css('border-color',  '#e74c3c').animate({
+                 borderWidth: 4
+            }, 500);
+         }
    });
 
 });
