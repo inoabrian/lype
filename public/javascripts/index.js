@@ -18,16 +18,28 @@ $(document).ready(function(){
       $('#userNumber').text("People Connected : " + data.numberOfUsers);
    });
 
+   socket.on('updateChatText', function(data){
+      $('#chat').append(data.text);
+   });
+
    socket.on('room-change-success', function(data) {
+      $('#chat').text('');
       var userName = data.userName;
+      var socket = this;
       $('#title').toggleClass('hidden');
       $('#inputArea').toggleClass('hidden');
       $('#videoArea').toggleClass('hidden');
       $('#chatArea').toggleClass('hidden');
+      $('#chatInput').toggleClass('hidden');
       $('#userNumber').toggleClass('hidden');
-
+      $('#chattext').on('keypress', function(event) {
+               if(event.which == 13){
+                  var text = userName + ' : ' + $(this).val() + '\t[' + new Date() + ']\r\n';
+                  socket.emit('updateChatText', {'text' : text});
+                  $(this).val() = '';
+               }
+      });
       this.emit('updateChatNumber',{'chatPopulation' : userName });
-      // We should redraw the page to show chat and video
    });
 
    socket.on('room-change-error', function(data) {
