@@ -1,5 +1,6 @@
 $(document).ready(function(){
    var socket = io.connect();
+   var userNameForIcon = '';
    function animateAlert(userName){
       $('#alert').slideDown('slow', function(){
             $(this).toggleClass('hidden');
@@ -15,15 +16,20 @@ $(document).ready(function(){
    };
 
    socket.on('update-number', function(data) {
-      $('#userNumber').text("People Connected : " + data.numberOfUsers);
+      $('#userNumber').text(": " + data.numberOfUsers);
+      var message = data.userLeaving + ' has left the room.';
+      var newElement = $('<div></div>').text(message);
+      $('#chat').append(newElement);
    });
 
    socket.on('updateChatText', function(data){
-      $('#chat').append(data.text);
+      var message = data.text;
+      var newElement = $('<div></div>').text(message);
+      $('#chat').append(newElement);
    });
 
    socket.on('room-change-success', function(data) {
-      $('#chattext').val('');
+      $('#chat').text('');
       var userName = data.userName;
       var socket = this;
       $('#title').toggleClass('hidden');
@@ -31,7 +37,7 @@ $(document).ready(function(){
       $('#videoArea').toggleClass('hidden');
       $('#chatArea').toggleClass('hidden');
       $('#chatInput').toggleClass('hidden');
-      $('#userNumber').toggleClass('hidden');
+      $('#close').toggleClass('hidden');
       $('#chattext').on('keypress', function(event) {
                if(event.which == 13){
                   var text = userName + ' : ' + $(this).val() + '\t[' + new Date() + ']\r\n';
@@ -60,6 +66,7 @@ $(document).ready(function(){
             $('#username').css('border-color',  '#27ae60').animate({
                  borderWidth: 1
             }, 500);
+            $('#userNameText').text(' : ' + userName);
             socket.emit('enterChat', {'userName' : userName});
          }else{
             $('#username').css('border-color',  '#e74c3c').animate({

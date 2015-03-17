@@ -1,20 +1,29 @@
 extends layout
 
 block content
-  div.container.full
+  div.container
                 
    div.col-lg-12.col-md-12.col-xs-12
       div.row
-         div.col-lg-12.col-md-12.col-xs-12.hidden#videoArea(style="margin-bottom:10%;")
+         div.col-lg-8.col-lg-offset-2.col-md-8.col-md-offset-2.col-xs-12(style="margin-top:2%;")
+            i.fa.fa-users.fa-3#userNumber(style='color: whitesmoke;margin-right:5%;display:inline;font-size:20px;')
+            i.fa.fa-child.fa-3#userNameText(style='color: whitesmoke;margin-right:5%;display:inline;font-size:20px;')=" : "
+            i.fa.fa-times-circle.fa-3.pull-right.hidden#close(style='color: whitesmoke;margin-right:5%;display:inline;font-size:20px;')
+
+            
+         div.col-lg-8.col-lg-offset-2.col-md-8.col-md-offset-2.col-xs-12.hidden#videoArea
            div.col-lg-12.col-md-12.col-xs-12
-             p="video"
+             
         div.col-lg-12.col-md-12.col-xs-12.hidden#chatArea
            div.col-lg-8.col-lg-offset-2.col-md-8.col-md-offset-2.col-xs-12#chat
-         .col-md-12.col-lg-12#chatInput.hidden
-            .form-group
-              .input-group
+         div.col-md-8.col-lg-8.col-xs-12.col-md-offset-2.col-lg-offset-2#chatInput.hidden
+            div.form-group
+              div.input-group
                 span.input-group-addon Chat
-                input#chattext.form-control(style='border-color: rgb(39, 174, 96); border-width: 1px;')
+                input#chattext.form-control
+             label
+                input(type='checkbox')
+                ='Enable Video'
              
           
         div.col-lg-12.col-md-12.col-xs-12.text-center#title
@@ -30,7 +39,7 @@ block content
 
       div.row.col-lg-12.col-md-12.col-xs-12#inputArea
          div.class-spacer-120
-            div.col-lg-3.col-md-3.col-xs-12.col-lg-offset-4.col-md-offset-4
+            div.col-lg-5.col-md-5.col-xs-12.col-lg-offset-3.col-md-offset-3
                div.form-group
                   div.input-group
                      span.input-group-addon= "Username"
@@ -47,8 +56,8 @@ block content
                div.form-group
                   div.input-group
                      button.btn.btn-default#submit= "Enter Chat"
-                     
-      div.col-lg-12.col-md-12.col-xs-12.text-center(style="color:white;")
-                  h3#userNumber= "Connections : "
+                     //- 
+      //- div.col-lg-12.col-md-12.col-xs-12.text-center(style="color:white;")
+      //-             h3#userNumber= "Connections : "
                         
 script(src='/socket.io/socket.io.js', type='text/javascript')

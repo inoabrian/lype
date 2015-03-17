@@ -111,10 +111,20 @@ a {
 
 #videoArea{
    height:200px;
-   background-color:white;
+   background-color : aquamarine;
+   margin-bottom:5%;
+   margin-top:3%;
 }
 
 #chat{
-   height:200px;
-   background-color:white;
+   color : white;
+   overflow : scroll;
+   -webkit-overflow-scrolling: touch;
+   overflow-wrap : break-word;
+   height : 200px;
+   background-color : transparent;
+}
+
+#chatArea{
+   margin-bottom:3%;
 }
