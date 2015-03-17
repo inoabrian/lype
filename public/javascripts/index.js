@@ -23,7 +23,7 @@ $(document).ready(function(){
    });
 
    socket.on('room-change-success', function(data) {
-      $('#chat').text('');
+      $('#chattext').val('');
       var userName = data.userName;
       var socket = this;
       $('#title').toggleClass('hidden');
@@ -49,7 +49,7 @@ $(document).ready(function(){
    });
 
    socket.on('updateChatPopulation', function(data){
-      $('#chat').append('<div>' + data.populationNumber + ' has joined the room.[' + new Date() +']</div><br>')
+      $('#chat').append('<div class="">' + data.populationNumber + ' has joined the room.[' + new Date() +']</div>')
    });
 
    $('#submit').click(function(e) {
