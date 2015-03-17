@@ -49,7 +49,7 @@ $(document).ready(function(){
    });
 
    socket.on('updateChatPopulation', function(data){
-      $('#chat').append('<div>' + data.populationNumber + ' has joined the room.[' + new Date() +']</div>')
+      $('#chat').append('<div>' + data.populationNumber + ' has joined the room.[' + new Date() +']</div><br>')
    });
 
    $('#submit').click(function(e) {
