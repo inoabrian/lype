@@ -16,6 +16,7 @@ $(document).ready(function(){
    };
 
    socket.on('update-number', function(data) {
+      console.log('people left : ' + data.numberOfUsers);
       $('#userNumber').text(": " + data.numberOfUsers);
       var message = data.userLeaving + ' has left the room.';
       var newElement = $('<div></div>').text(message);
