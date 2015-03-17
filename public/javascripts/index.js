@@ -36,7 +36,7 @@ $(document).ready(function(){
                if(event.which == 13){
                   var text = userName + ' : ' + $(this).val() + '\t[' + new Date() + ']\r\n';
                   socket.emit('updateChatText', {'text' : text});
-                  $(this).val() = '';
+                  $(this).val('');
                }
       });
       this.emit('updateChatNumber',{'chatPopulation' : userName });
@@ -49,7 +49,7 @@ $(document).ready(function(){
    });
 
    socket.on('updateChatPopulation', function(data){
-      $('#chat').append('<div class="">' + data.populationNumber + ' has joined the room.[' + new Date() +']</div>')
+      $('#chat').append('<div class="" style="display:block;">' + data.populationNumber + ' has joined the room \t[' + new Date() +']</div>')
    });
 
    $('#submit').click(function(e) {
