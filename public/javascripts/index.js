@@ -28,6 +28,10 @@ $(document).ready(function() {
 
    });
 
+   $('#close').click(function() {
+         window.document.location.reload();
+   });
+
    $('#submit').click(function(e) {
 
       var userName = $('#username').val();
