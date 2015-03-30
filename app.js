@@ -69,45 +69,42 @@ app.get('/:roomname', function(req, res) {
    });
 });
 
+// function to initiate a user after they submit their nickname
+function initiate(socket) {
+   var guestName = _Util.generateGuest();
+   _Util.registerUser(socket, guestName);
+   // console.log('Users Connected : ' + _Util.namesUsed.length);
+}
+
 io.sockets.on('connection', function (socket) {
 
-    var guestName = _Util.generateGuest();
-    _Util.registerUser(socket, guestName);
-    console.log('Users Connected : ' + _Util.namesUsed.length);
-    io.sockets.emit('update-number', {'numberOfUsers' : _Util.namesUsed.length});
+   io.sockets.emit('update-number', {'numberOfUsers' : _Util.namesUsed.length});
+   socket.emit('check-user', {'time' : new Date()});
 
-    socket.on('disconnect', function() {
-      setTimeout(function() {
-         var userNameLeaving = _Util.getUserName(this);
-         io.sockets.emit('update-number', {'numberOfUsers' : _Util.namesUsed.length, 'userLeaving' : userNameLeaving});
-         _Util.removeUser(this);
-         console.log('There was a disconnect ' + userNameLeaving + ' has left, Users Connected : ' + _Util.namesUsed.length);
-      }.bind(this),2000);
-   });
+   socket.on('enter-chat', function(data) {
 
-   socket.on('updateChatText', function(data){
-      io.sockets.emit('updateChatText', {'text': data.text});
-   });
+      var registered = _Util.registerUser(this, data.userName);
 
-   socket.on('enterChat', function(data) {
-      var userName = data.userName;
-      var socket = this;
-      var nameChanged = _Util.changeName(socket, userName);
-      if(nameChanged){
-        //Change rooms by emmiting client side event
-        console.log('room-change-success');
-        this.emit('room-change-success', {'userName' : userName});
-      }else{
-        /// No room change stay in curent room
-        console.log('room-change-error');
-        this.emit('room-change-error', {'userName' : userName});
+      if(registered){
+            socket.emit('room-change-success', {'userName' : data.userName});
       }
+
    });
 
    socket.on('updateChatNumber', function(data){
+
          _Util.chatPopulation += 1;
-         var name = data.chatPopulation;
-         io.sockets.emit('updateChatPopulation',{'populationNumber' : name});
+         var population = data.chatPopulation;
+         io.sockets.emit('updateChatPopulation', {'populationNumber' : population});
+
+   });
+
+   socket.on('disconnect', function() {
+         console.log('user left');
+         // var userNameLeaving = _Util.getUserName(this);
+         // io.sockets.emit('update-number', {'numberOfUsers' : _Util.namesUsed.length, 'userLeaving' : userNameLeaving});
+         // _Util.removeUser(this);
+         // console.log('There was a disconnect ' + userNameLeaving + ' has left, Users Connected : ' + _Util.namesUsed.length);
    });
 
 });
