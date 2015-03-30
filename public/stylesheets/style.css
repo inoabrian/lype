@@ -102,3 +102,10 @@ a {
 #chatArea {
    margin-bottom: 3%;
 }
+
+#message{
+   margin-bottom : 5px;
+   line-height : 15px;
+   font-size : 12px;
+   border-bottom : 1px solid white;
+}

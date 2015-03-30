@@ -1,17 +1,21 @@
 $(document).ready(function() {
    var socket = io.connect();
    var userNameForIcon = '';
+   var userNameUsedBool = false;
 
-   $('#submit').click(function(e) {
+   function checkDuplicateName(socket, name) {
+         socket.emit('duplicate', {'name' : name});
+   };
 
+   socket.on('checkDuplicateNameReturn', function(data) {
       var userName = $('#username').val();
+      userNameUsedBool = data.status;
 
-      if (userName != '') {
+      if (userName != '' && userNameUsedBool) {
          $('#username').css('border-color', '#27ae60').animate({
             borderWidth: 1
          }, 500);
          $('#userNameText').text(' : ' + userName);
-         instantiateLocalStorage(userName, socket);
          socket.emit('enter-chat', {
             'userName': userName
          });
@@ -19,19 +23,17 @@ $(document).ready(function() {
          $('#username').css('border-color', '#e74c3c').animate({
             borderWidth: 4
          }, 500);
+         animateAlert(userName);
       }
 
    });
 
-   function instantiateLocalStorage(name, socket) {
-      localStorage.setItem('username', name);
-      localStorage.setItem('time', new Date());
-      localStorage.setItem('socket', socket.id);
-   };
+   $('#submit').click(function(e) {
 
-   function initIndexReturn(name) {
-      $('#username').val(name);
-   };
+      var userName = $('#username').val();
+      checkDuplicateName(socket, userName);
+
+   });
 
    socket.on('room-change-success', function(data) {
       $('#chat').text('');
@@ -43,6 +45,7 @@ $(document).ready(function() {
       $('#chatArea').toggleClass('hidden');
       $('#chatInput').toggleClass('hidden');
       $('#close').toggleClass('hidden');
+
       $('#chattext').on('keypress', function(event) {
          if (event.which == 13) {
             var text = userName + ' : ' + $(this).val() + '\t[' + new Date() + ']\r\n';
@@ -52,29 +55,18 @@ $(document).ready(function() {
             $('#chattext').val('');
          }
       });
+
       this.emit('updateChatNumber', {
          'chatPopulation': userName
       });
-   });
-
-   socket.on('check-user', function(data) {
-      var time = data.time;
-
-      if (localStorage.getItem('time')) {
-         // load in index text input box their name
-         localStorage.setItem('socket', this.id);
-         var name = localStorage.getItem('name');
-         initIndexReturn(name);
-      } else {
-         // load page normally
-      }
 
    });
 
    socket.on('updateChatPopulation', function(data) {
       var message = data.populationNumber + ' has joined the room.';
-      var newElement = $('<div></div>').text(message);
+      var newElement = $('<div id="message"></div>').text(message);
       $('#chat').append(newElement);
+      scrollToTop();
    });
 
 
@@ -85,51 +77,37 @@ $(document).ready(function() {
       }
       else if(data.userLeaving){
          var message = data.userLeaving + ' has left the room.';
-         var newElement = $('<div></div>').text(message);
+         var newElement = $('<div id="message"></div>').text(message);
          $('#chat').append(newElement);
+         scrollToTop();
       }
    });
 
-   // function checkIfRefresh() {
-   //
-   //       if(localStorage.getItem('userName')){
-   //          var savedTime = localStorage.getItem('time');
-   //          if(!!savedTime){
-   //             if( ( (new Date() - savedTime) / 1000 ) > 60  ){
-   //                return false;
-   //             }else{
-   //                return true;
-   //             }
-   //          }else{
-   //             return false;
-   //          }
-   //       }
-   //       return false;
-   //
-   // };
-   //
-   // function saveUserToLocalStorage(userName, socket) {
-   //    if(checkIfRefresh()){
-   //       localStorage.setItem('time', new Date());
-   //    }else{
-   //       localStorage.setItem('userName', userName);
-   //       localStorage.setItem('socket', socket.id);
-   //    }
-   // };
-   //
-   // function animateAlert(userName){
-   //    $('#alert').slideDown('slow', function(){
-   //          $(this).toggleClass('hidden');
-   //          $(this).css('border-color',  '#e74c3c').animate({
-   //               borderWidth: 4
-   //          }, 500);
-   //          $('#alert-text').text('Username : ' + userName + ' is already taken');
-   //          // animate div like glow or bounce...etc...
-   //          setTimeout(function(){
-   //             $(this).toggleClass('hidden');
-   //          }.bind(this), 3000);
-   //    });
-   // };
+   socket.on('updateChatText', function(data){
+      var message = data.text;
+      var newElement = $('<div id="message"></div>').text(message);
+      $('#chat').append(newElement);
+      scrollToTop();
+   });
+
+   function animateAlert(userName){
+      $('#alert').slideDown('slow', function(){
+            $(this).toggleClass('hidden');
+            $(this).css('border-color',  '#e74c3c').animate({
+                 borderWidth: 4
+            }, 500);
+            $('#alert-text').text('Username : ' + userName + ' is already taken');
+            // animate div like glow or bounce...etc...
+            setTimeout(function(){
+               $(this).toggleClass('hidden');
+            }.bind(this), 3000);
+      });
+   };
+
+   function scrollToTop(){
+      var height = document.getElementById('chat').scrollHeight;
+      $('#chat').scrollTop(height);
+   }
    //
    // socket.on('update-number', function(data) {
    //    console.log('people left : ' + data.numberOfUsers);
