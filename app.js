@@ -140,7 +140,7 @@ io.sockets.on('connection', function(socket) {
 
    socket.on('disconnect', function() {
       console.log('user left');
-      // var userNameLeaving = _Util.getUserName(this);
+      var userNameLeaving = _Util.removeUser(this);
       // io.sockets.emit('update-number', {'numberOfUsers' : _Util.namesUsed.length, 'userLeaving' : userNameLeaving});
       // _Util.removeUser(this);
       // console.log('There was a disconnect ' + userNameLeaving + ' has left, Users Connected : ' + _Util.namesUsed.length);
