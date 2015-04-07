@@ -12,7 +12,10 @@ block content
 
             
          div.col-lg-8.col-lg-offset-2.col-md-8.col-md-offset-2.col-xs-12.hidden#videoArea
-           div.col-lg-12.col-md-12.col-xs-12
+           div.col-lg-12.col-md-12.col-xs-12(style='position:absolute; bottom:0; color:white;')
+             i.fa.fa-th-large.fa-3
+             i.fa.fa-square-o.fa-3.hidden
+             i.fa.fa-video-camera.fa-3.pull-right(style='margin-right : 20px;')
              
         div.col-lg-12.col-md-12.col-xs-12.hidden#chatArea
            div.col-lg-8.col-lg-offset-2.col-md-8.col-md-offset-2.col-xs-12#chat
@@ -21,9 +24,9 @@ block content
               div.input-group
                 span.input-group-addon Chat
                 input#chattext.form-control
-             label
-                input(type='checkbox')
-                ='Enable Video'
+            //-  label
+            //-     input(type='checkbox')
+            //-     ='Enable Video'
              
           
         div.col-lg-12.col-md-12.col-xs-12.text-center#title
