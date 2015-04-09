@@ -2,7 +2,7 @@ $(document).ready(function() {
    var socket = io.connect();
    var userNameForIcon = '';
    var userNameUsedBool = false;
-
+   var media = new userMedia();
    function checkDuplicateName(socket, name) {
          socket.emit('duplicate', {'name' : name});
    };
@@ -28,6 +28,26 @@ $(document).ready(function() {
 
    });
 
+   $('.fa-th-large').click(function(){
+      if($('.fa-square-o').hasClass('hidden')){
+         $(this).toggleClass('hidden');
+         $('.fa-square-o').toggleClass('hidden')
+      }
+   });
+
+   $('.fa-square-o').click(function(){
+      if($('.fa-th-large').hasClass('hidden')){
+         $(this).toggleClass('hidden');
+         $('.fa-th-large').toggleClass('hidden')
+      }
+   });
+
+   $('.fa-video-camera').click(function(){
+      if(media)
+         media.check();
+      alert('Want to activate camera?');
+   });
+
    $('#close').click(function() {
          window.document.location.reload();
    });
@@ -46,6 +66,7 @@ $(document).ready(function() {
       $('#title').toggleClass('hidden');
       $('#inputArea').toggleClass('hidden');
       $('#videoArea').toggleClass('hidden');
+      $('video').toggleClass('hidden');
       $('#chatArea').toggleClass('hidden');
       $('#chatInput').toggleClass('hidden');
       $('#close').toggleClass('hidden');

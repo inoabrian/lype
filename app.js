@@ -91,13 +91,17 @@ io.sockets.on('connection', function(socket) {
    socket.on('duplicate', function(data) {
       var name = data.name;
       var nameAvailable = _Util.checkNameAvailable(name);
-      if(nameAvailable) {
+      if (nameAvailable) {
 
-         this.emit('checkDuplicateNameReturn', {'status' : true});
+         this.emit('checkDuplicateNameReturn', {
+            'status': true
+         });
 
-      }else{
+      } else {
 
-            this.emit('checkDuplicateNameReturn', {'status' : false});
+         this.emit('checkDuplicateNameReturn', {
+            'status': false
+         });
       }
    });
 
@@ -125,17 +129,21 @@ io.sockets.on('connection', function(socket) {
          'populationNumber': population
       });
 
-      io.sockets.emit('update-number',{
-         'numberOfUsers' : _Util.chatPopulation
+      io.sockets.emit('update-number', {
+         'numberOfUsers': _Util.chatPopulation
       });
 
 
    });
 
-   socket.on('updateChatText', function (data) {
+   socket.on('updateChatText', function(data) {
       io.sockets.emit('updateChatText', {
-         'text' : data.text
+         'text': data.text
       });
+   });
+
+   socket.on('video', function(data){
+      console.log(data.buffer);
    });
 
    socket.on('disconnect', function() {
