@@ -42,7 +42,7 @@ var userMedia = function() {
             x.responseType = 'arraybuffer';
             x.send();
 
-            socket.emit('video', {'buffer' : streamBuffer});
+            //socket.emit('video', {'buffer' : streamBuffer});
           };
      }, function(){
         console.log('error');
