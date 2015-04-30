@@ -1,18 +1,12 @@
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
 var _Util = require('./lib/util.js');
 var routes = require('./routes/index');
-var room = require('./routes/room');
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
-// Package to enable CORS
-var cors = require('cors');
 
 // view engine setup
 
@@ -29,7 +23,6 @@ app.use(bodyParser.urlencoded({
    extended: false
 }));
 app.use(cookieParser());
-app.use(cors());
 app.use('/', routes);
 // app.use('/room', room);
 
@@ -75,11 +68,10 @@ app.get('/:roomname', function(req, res) {
 function initiate(socket) {
    var guestName = _Util.generateGuest();
    _Util.registerUser(socket, guestName);
-   // console.log('Users Connected : ' + _Util.namesUsed.length);
 }
 
 io.sockets.on('connection', function(socket) {
-
+   console.log('User Connected');
    io.sockets.emit('update-number', {
       'numberOfUsers': _Util.namesUsed.length
    });
@@ -91,6 +83,7 @@ io.sockets.on('connection', function(socket) {
    socket.on('duplicate', function(data) {
       var name = data.name;
       var nameAvailable = _Util.checkNameAvailable(name);
+      console.log('duplicate - name: ' , name, 'name available : ' ,nameAvailable);
       if (nameAvailable) {
 
          this.emit('checkDuplicateNameReturn', {
@@ -142,18 +135,22 @@ io.sockets.on('connection', function(socket) {
       });
    });
 
-   socket.on('video', function(data){
+   socket.on('video', function(data) {
       console.log(data.buffer);
    });
 
    socket.on('disconnect', function() {
       console.log('user left');
       var userNameLeaving = _Util.removeUser(this);
-      // io.sockets.emit('update-number', {'numberOfUsers' : _Util.namesUsed.length, 'userLeaving' : userNameLeaving});
-      // _Util.removeUser(this);
-      // console.log('There was a disconnect ' + userNameLeaving + ' has left, Users Connected : ' + _Util.namesUsed.length);
+      io.sockets.emit('update-number', {
+         'numberOfUsers': _Util.chatPopulation
+      });
    });
 
 });
 
-http.listen(process.env.PORT || '8000');
+var PORT = '8080';
+
+console.log('Server Started on port ' + PORT);
+
+http.listen(process.env.PORT || PORT);

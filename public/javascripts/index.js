@@ -11,7 +11,7 @@ $(document).ready(function() {
       var userName = $('#username').val();
       userNameUsedBool = data.status;
 
-      if (userName != '' && userNameUsedBool) {
+      if (userName != '' && userNameUsedBool) { 
          $('#username').css('border-color', '#27ae60').animate({
             borderWidth: 1
          }, 500);
@@ -43,9 +43,10 @@ $(document).ready(function() {
    });
 
    $('.fa-video-camera').click(function(){
-      if(media)
+      if(media){
          media.check();
-      alert('Want to activate camera?');
+         //media.createPeerConnection();
+      }
    });
 
    $('#close').click(function() {
